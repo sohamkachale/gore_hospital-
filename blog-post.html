@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/x-icon" href="assets/logo.jpeg">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -12,9 +13,9 @@
   <meta property="og:title" content="Blogs | Gore Multispeciality Hospital, Ravet">
   <meta property="og:description"
     content="Detailed health article from Gore Multispeciality Hospital, Ravet. Learn more about diseases, treatments and preventive care from our specialist doctors.">
-  <meta property="og:image" content="https://gorehospital.com//assets/digital-marketing-agency-pune.jpg">
+  <meta property="og:image" content="#">
   <meta property="og:url" content="https://gorehospital.com/blog-post.html">
-  <meta name="twitter:card" content="https://gorehospital.com//assets/digital-marketing-agency-pune.jpg">
+  <meta name="twitter:card" content="#">
   <meta name="google-site-verification" content="dLZg1y3EKmULqa1WODeAoMWPpKHYPyCSZ_bHDZ_-xEI" />
   <!-- Canonical URL -->
   <link rel="canonical" href="https://gorehospital.com/blog-post.html">
@@ -875,14 +876,32 @@
       tag.setAttribute("content", content);
     }
 
+    // --- SEO URL Helper ---
+    function toSeoSlug(text) {
+      if (!text) return "";
+      return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, "-") // Replace spaces with -
+        .replace(/[^\w-]+/g, "") // Remove all non-word chars (except -)
+        .replace(/--+/g, "-") // Replace multiple - with single -
+        .replace(/^-+/, "") // Trim - from start of text
+        .replace(/-+$/, ""); // Trim - from end of text
+    }
+
     async function loadSinglePost() {
       const container = document.getElementById("post-container");
 
-      // œ… Support BOTH slug and postId
+      // 1. Identification: Detect slug or postId from query parameters
       const slugParam = getQueryParam("slug");
       const postIdParam = getQueryParam("postId");
 
-      if (!slugParam && !postIdParam) {
+      // Fallback for paths if already transformed
+      const path = window.location.pathname;
+      const pathMatch = path.match(/\/post\/([^/]+)\/?$/);
+      const pathSlug = pathMatch ? pathMatch[1] : null;
+
+      if (!slugParam && !postIdParam && !pathSlug) {
         showPostError("No article selected. Please go back to the blog list.");
         return;
       }
@@ -891,11 +910,12 @@
         let post;
         let slugForSeo;
 
-        if (slugParam) {
+        if (slugParam || pathSlug) {
           // ” Fetch by slug
+          const targetSlug = slugParam || pathSlug;
           const res = await fetch(
             `${WP_BASE_URL}/posts?slug=${encodeURIComponent(
-              slugParam
+              targetSlug
             )}&_embed=1`
           );
 
@@ -911,7 +931,7 @@
           }
 
           post = posts[0];
-          slugForSeo = slugParam;
+          slugForSeo = post.slug;
         } else {
           // ” Fallback: fetch by ID (when link is blog-post.html?postId=123)
           const res = await fetch(
@@ -925,6 +945,13 @@
 
           post = await res.json();
           slugForSeo = post.slug; // use actual slug for SEO map
+        }
+
+        // --- DYNAMIC URL UPDATE (No Reload) ---
+        const finalSlug = toSeoSlug(slugForSeo);
+        if (finalSlug) {
+          const newUrl = `/blogs/${finalSlug}/`;
+          window.history.replaceState({ postId: post.id }, post.title?.rendered || "", newUrl);
         }
 
         const title = post.title?.rendered || "Health Article";
@@ -1015,7 +1042,7 @@
         </div>
 
         <div class="single-post-back">
-          <a href="blog.html">
+          <a href="/blog.html">
             <i class="fas fa-arrow-left"></i> Back to all articles
           </a>
         </div>
@@ -1057,7 +1084,7 @@
               year: "numeric"
             });
             const slug = post.slug;
-            const link = `blog-post.html?slug=${encodeURIComponent(slug)}`;
+            const link = `/blog-post.html?slug=${slug}`;
 
             let imageUrl = getImageUrl(post);
             if (!imageUrl) {
@@ -1091,6 +1118,13 @@
     document.addEventListener("DOMContentLoaded", () => {
       loadSinglePost();
       fetchLatestSidebarPosts();
+
+      // Listen for browser back/forward buttons
+      window.addEventListener("popstate", () => {
+        loadSinglePost();
+      });
+
+
 
       const searchForm = document.getElementById("search-form");
       if (searchForm) {

@@ -108,55 +108,40 @@
     /* ---------- Doctors grid ---------- */
     .doc-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin: 32px 0 70px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 30px;
+      margin: 40px 0 80px;
     }
 
     .doc-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-bd);
-      border-radius: 16px;
-      box-shadow: var(--soft);
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      /* Soft, premium shadow */
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: box-shadow 0.25s ease, transform 0.25s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
+      height: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.02);
     }
 
     .doc-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--soft-2);
-    }
-
-    /* Shine effect overlay */
-    .doc-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.4),
-          transparent);
-      transition: left 0.5s ease;
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .doc-card:hover::before {
-      left: 100%;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     }
 
     .doc-photo {
       position: relative;
       width: 100%;
       aspect-ratio: 1 / 1;
-      background: #eef2ff;
+      /* Square - Professional & Consistent */
+      background: #f8f9fa;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .doc-photo img {
@@ -167,109 +152,115 @@
       object-fit: cover;
       object-position: top center;
       display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
+    .doc-card:hover .doc-photo img {
+      transform: scale(1.08);
+      /* Subtle zoom */
+    }
+
+    /* Details Section */
     .doc-body {
-      padding: 18px 18px 20px;
+      padding: 24px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      /* Center align for premium feel */
+      text-align: center;
+      gap: 6px;
+      flex-grow: 1;
+      background: #fff;
+      z-index: 5;
+      position: relative;
     }
 
     .doc-name {
-      font-weight: 300;
-      font-size: clamp(18px, 2.2vw, 22px);
-      line-height: 1.25;
+      font-weight: 500;
+      font-size: 19px;
+      line-height: 1.3;
       margin: 0;
-      letter-spacing: 0.1px;
+      color: #1a202c;
+      letter-spacing: -0.3px;
     }
 
     .doc-spec {
       font-weight: 600;
-      font-size: clamp(14.5px, 1.7vw, 16.5px);
-      color: #2f2f35;
-      margin: 0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #007bff;
+      /* Medical Blue accent */
+      margin-top: 2px;
     }
 
     .doc-qual {
-      font-size: clamp(14px, 1.6vw, 16px);
-      color: var(--muted);
+      font-size: 14px;
+      color: #718096;
       margin: 0;
-      line-height: 1.6;
+      line-height: 1.5;
+      font-weight: 400;
     }
 
-    @media (max-width: 575.98px) {
-      .doc-body {
-        text-align: center;
-      }
-    }
-
-    /* ---------- Silver-White Gradient Card (No Image) ---------- */
-    .doc-card.no-image {
-      background: var(--silver-gradient);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .doc-card.no-image::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right,
-          rgba(255, 255, 255, 0.6),
-          transparent 60%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
+    /* ---------- Empty State (Creative & Professional) ---------- */
     .doc-card.no-image .doc-photo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: transparent;
-      position: relative;
-      z-index: 2;
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
     }
 
     .doc-card.no-image .doc-photo img {
-      display: none;
+      position: static;
+      width: 80px;
+      height: 80px;
+      opacity: 0.4;
+      object-fit: contain;
+      filter: grayscale(100%);
+      animation: pulse-logo 3s infinite ease-in-out;
+      display: block !important;
     }
 
-    .doc-card.no-image .doc-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      text-align: center;
+    @keyframes pulse-logo {
+      0% {
+        opacity: 0.3;
+        transform: scale(0.95);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+      }
+
+      100% {
+        opacity: 0.3;
+        transform: scale(0.95);
+      }
+    }
+
+    .doc-card.no-image .doc-photo img {
+      display: none !important;
+    }
+
+    /* The Scanner Bar Animation */
+    .scan-line {
+      position: absolute;
+      top: -10%;
+      left: 0;
       width: 100%;
-    }
-
-    .doc-card.no-image .doc-name {
-      font-weight: 600;
-      color: #2d3748;
-      font-size: clamp(20px, 2.4vw, 24px);
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-    }
-
-    .doc-card.no-image .doc-spec {
-      color: #4a5568;
-      font-weight: 600;
-    }
-
-    .doc-card.no-image .doc-qual {
-      color: #5b5b63;
-      font-size: clamp(13.5px, 1.5vw, 15px);
+      height: 15%;
+      background: linear-gradient(180deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.9) 50%,
+          transparent 100%);
+      filter: blur(4px);
+      opacity: 0.7;
+      z-index: 2;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
     }
 
     .doc-card.no-image .doc-body {
-      display: none;
-    }
-
-    /* Professional shine on gradient cards */
-    .doc-card.no-image::before {
-      background: linear-gradient(90deg,
-          transparent,
-          rgba(255, 255, 255, 0.6),
-          transparent);
+      background: #ffffff;
+      justify-content: flex-start;
+      height: auto;
+      min-height: 110px;
     }
 
     /* Scroll reveal (no flicker) */
@@ -710,9 +701,9 @@
                           <!-- Right side -->
                           <div class="col-lg-3">
                             <div class="menu-right-add">
-                              <img src="assets/01_menu.webp" alt="gore-hospital-image">
+                              <img src="assets/01_menu.webp" alt="gore-hospital-image" loading="lazy">
                               <div class="absolute-image">
-                                <img src="assets/02_menu.webp" alt="gore-hospital-image">
+                                <img src="assets/02_menu.webp" alt="gore-hospital-image" loading="lazy">
                                 <div class="inner-content">
                                   <h3 class="title">
                                     Trust Your Heart to <br>
@@ -747,7 +738,7 @@
             <div class="header-right">
               <!-- search removed per request -->
               <a href="/appointment.html" class="rts-btn btn-primary">Appointment
-                <img src="assets/arrow--up-right.svg" alt="gore-hospital-image"></a>
+                <img src="assets/arrow--up-right.svg" alt="gore-hospital-image" loading="lazy"></a>
               <div class="menu-btn" id="menu-btn">
                 <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect y="14" width="20" height="2" fill="#1F1F25"></rect>
@@ -780,7 +771,7 @@
       <!-- Cards (unchanged visually) -->
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="assets/gore.png" alt="Dr. Dattesh Gore">
+          <img src="assets/gore.png" alt="Dr. Dattesh Gore" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Dattesh Gore</h3>
@@ -796,7 +787,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Shubhangi Gaikwad">
+          <img src="#" alt="Dr. Shubhangi Gaikwad" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Shubhangi Gaikwad</h3>
@@ -807,7 +798,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Vilas Mundkar">
+          <img src="#" alt="Dr. Vilas Mundkar" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Vilas Mundkar</h3>
@@ -818,7 +809,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="assets/sandesh.jpg" alt="Dr. Sandesh Gawade">
+          <img src="assets/sandesh.jpg" alt="Dr. Sandesh Gawade" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sandesh Gawade</h3>
@@ -831,7 +822,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Vivek Kulkarni">
+          <img src="#" alt="Dr. Vivek Kulkarni" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Vivek Kulkarni</h3>
@@ -846,7 +837,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Sanjay Ponde">
+          <img src="#" alt="Dr. Sanjay Ponde" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sanjay Ponde</h3>
@@ -859,7 +850,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Chaitanya Kadam">
+          <img src="#" alt="Dr. Chaitanya Kadam" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Chaitanya Kadam</h3>
@@ -870,7 +861,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="assets/sumita.jpg" alt="Dr. Sumita Saroj">
+          <img src="assets/sumita.jpg" alt="Dr. Sumita Saroj" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sumita Saroj</h3>
@@ -881,7 +872,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="assets/amolthorat.jpg" alt="Dr. Amol Thorat">
+          <img src="assets/amolthorat.jpg" alt="Dr. Amol Thorat" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Amol Thorat</h3>
@@ -894,7 +885,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Praveen Dharaskar">
+          <img src="#" alt="Dr. Praveen Dharaskar" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Praveen Dharaskar</h3>
@@ -905,7 +896,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Nikhil Mohorkar">
+          <img src="#" alt="Dr. Nikhil Mohorkar" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Nikhil Mohorkar</h3>
@@ -916,7 +907,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Ajay Dombale">
+          <img src="#" alt="Dr. Ajay Dombale" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Ajay Dombale</h3>
@@ -927,7 +918,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Pravin Waghmare">
+          <img src="#" alt="Dr. Pravin Waghmare" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Pravin Waghmare</h3>
@@ -938,7 +929,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Ashish Ubale">
+          <img src="#" alt="Dr. Ashish Ubale" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Ashish Ubale</h3>
@@ -949,7 +940,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Gautam Jugal">
+          <img src="#" alt="Dr. Gautam Jugal" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Gautam Jugal</h3>
@@ -960,7 +951,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Chandrakant Upadhyay">
+          <img src="#" alt="Dr. Chandrakant Upadhyay" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Chandrakant Upadhyay</h3>
@@ -971,7 +962,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Priya Waghmare">
+          <img src="#" alt="Dr. Priya Waghmare" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Priya Waghmare</h3>
@@ -982,7 +973,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Bhushan Patil">
+          <img src="#" alt="Dr. Bhushan Patil" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Bhushan Patil</h3>
@@ -993,7 +984,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Sandeep Naphade">
+          <img src="#" alt="Dr. Sandeep Naphade" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sandeep Naphade</h3>
@@ -1002,9 +993,9 @@
         </div>
       </article>
 
-      <article class="doc-card doctor-card-io">
-        <div class="do#
-          <img src=" #" alt="Dr. Amit Kumar Pandey">
+   <article class="doc-card doctor-card-io">
+        <div class="doc-photo">
+          <img src="#" alt="Dr. Amit Kumar Pandey" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Amit Kumar Pandey</h3>
@@ -1015,7 +1006,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Paresh Babel">
+          <img src="#" alt="Dr. Paresh Babel" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Paresh Babel</h3>
@@ -1026,7 +1017,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Amit Morey">
+          <img src="#" alt="Dr. Amit Morey" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Amit Morey</h3>
@@ -1037,7 +1028,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Prathamesh Kulkarni">
+          <img src="#" alt="Dr. Prathamesh Kulkarni" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Prathamesh Kulkarni</h3>
@@ -1048,7 +1039,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Pandit Pachore">
+          <img src="#" alt="Dr. Pandit Pachore" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Pandit Pachore</h3>
@@ -1059,7 +1050,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Sandeep Bendale">
+          <img src="#" alt="Dr. Sandeep Bendale" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sandeep Bendale</h3>
@@ -1070,7 +1061,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Prafull Warghane">
+          <img src="#" alt="Dr. Prafull Warghane" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Prafull Warghane</h3>
@@ -1081,7 +1072,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Vivek Bonde">
+          <img src="#" alt="Dr. Vivek Bonde" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Vivek Bonde</h3>
@@ -1092,7 +1083,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Bhagirath More">
+          <img src="#" alt="Dr. Bhagirath More" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Bhagirath More</h3>
@@ -1103,7 +1094,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Rakesh Neve">
+          <img src="#" alt="Dr. Rakesh Neve" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Rakesh Neve</h3>
@@ -1114,7 +1105,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Jaypal Reddy">
+          <img src="#" alt="Dr. Jaypal Reddy" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Jaypal Reddy</h3>
@@ -1125,7 +1116,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Shankar Mundhe">
+          <img src="#" alt="Dr. Shankar Mundhe" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Shankar Mundhe</h3>
@@ -1136,7 +1127,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="#" alt="Dr. Upendra Kudlikar">
+          <img src="#" alt="Dr. Upendra Kudlikar" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Upendra Kudlikar</h3>
@@ -1147,7 +1138,7 @@
 
       <article class="doc-card doctor-card-io">
         <div class="doc-photo">
-          <img src="assets/sanika.jpg" alt="Dr. Sanika Gawade">
+          <img src="assets/sanika.jpg" alt="Dr. Sanika Gawade" loading="lazy">
         </div>
         <div class="doc-body">
           <h3 class="doc-name">Dr. Sanika Gawade</h3>
@@ -1176,27 +1167,27 @@
                 <ul class="submenu mm-collapse">
                   <li>
                     <a class="mobile-menu-link" href="/services/cardiology.html"><img src="assets/09.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Cardiology</a>
                   </li>
                   <li>
                     <a class="mobile-menu-link" href="/services/pediatric.html"><img src="assets/11.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Paediatrics</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/neurology.html"><img src="assets/10.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Neurology</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/gynaecology.html"><img src="assets/12.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Obstetrics</a>
                   </li>
                   <li>
                     <a class="mobile-menu-link" href="/services/ent.html"><img src="assets/12.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       ENT</a>
                   </li>
                 </ul>
@@ -1207,21 +1198,21 @@
                 <ul class="submenu mm-collapse">
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/orthopaedics.html"><img src="assets/14.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Orthopaedics</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/neurology.html"><img src="assets/13.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Neurology</a>
                   </li>
                   <li class="is-disabled">
-                    <a class="mobile-menu-link" href="#"><img src="assets/15.svg" alt="gore-hospital-image">
+                    <a class="mobile-menu-link" href="#"><img src="assets/15.svg" alt="gore-hospital-image" loading="lazy">
                       Dermatology</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/gynaecology.html"><img src="assets/16.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Gynecology</a>
                   </li>
                 </ul>
@@ -1232,27 +1223,27 @@
                 <ul class="submenu mm-collapse">
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/endocrinology.html"><img src="assets/24.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Endocrinology</a>
                   </li>
                   <li>
                     <a class="mobile-menu-link" href="/services/nephrology.html"><img src="assets/25.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Nephrology</a>
                   </li>
                   <li>
                     <a class="mobile-menu-link" href="/services/gastrology.html"><img src="assets/gastrology-menu.png"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Gastrology</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/cancer-care.html"><img src="assets/26.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Cancer Care</a>
                   </li>
                   <li class="is-disabled">
                     <a class="mobile-menu-link" href="/services/radiology.html"><img src="assets/27.svg"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Radiology</a>
                   </li>
                 </ul>
@@ -1262,24 +1253,24 @@
                 <a href="#" class="main">Critical & Rehab</a>
                 <ul class="submenu mm-collapse">
                   <li class="is-disabled">
-                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image">
+                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image" loading="lazy">
                       Emergency Services</a>
                   </li>
                   <li class="is-disabled">
-                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image">
+                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image" loading="lazy">
                       Intensive Care Unit</a>
                   </li>
                   <li class="is-disabled">
-                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image">
+                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image" loading="lazy">
                       Critical Care</a>
                   </li>
                   <li class="is-disabled">
-                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image">
+                    <a class="mobile-menu-link" href="#"><img src="assets/10.svg" alt="gore-hospital-image" loading="lazy">
                       Rehabilitation &amp; Physiotherapy</a>
                   </li>
                   <li>
                     <a class="mobile-menu-link" href="/services/pulmonology.html"><img src="assets/pilomonology.webp"
-                        alt="gore-hospital-image">
+                        alt="gore-hospital-image" loading="lazy">
                       Pulmonology</a>
                   </li>
                 </ul>
@@ -1306,6 +1297,8 @@
   <script src="assets/js/plugins/magnifying-popup.js"></script>
   <script src="assets/js/vendor/bootstrap.min.js"></script>
   <script src="assets/js/main.js"></script>
+  <!-- GSAP for Iron Shine Effect -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <!-- IntersectionObserver reveal -->
   <script>
@@ -1349,8 +1342,11 @@
       }, 1000);
     })();
 
-    // Auto-detect generic images, convert to gradient cards, and reorder
+    // Auto-detect missing images and insert Professional Placeholder
     (function () {
+      // Simple SVG Doctor Icon
+      const placeholderSVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235b5b63'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E`;
+
       const genericImages = ["01.jpg", "02.jpg", "03.jpg", "04.jpg"];
       const grid = document.querySelector(".doc-grid");
       const cards = Array.from(document.querySelectorAll(".doc-card"));
@@ -1361,26 +1357,25 @@
       cards.forEach((card) => {
         const img = card.querySelector(".doc-photo img");
         const imgSrc = img ? img.getAttribute("src") : "";
-        const filename = imgSrc.split("/").pop();
+        const filename = imgSrc ? imgSrc.split("/").pop() : "";
 
-        // Check if image is generic (01.jpg, 02.jpg, etc.)
-        if (genericImages.includes(filename)) {
+        // Condition for missing/placeholder image
+        const isMissing = !imgSrc || imgSrc === "#" || imgSrc.trim() === "" || genericImages.includes(filename);
+
+        if (isMissing) {
           card.classList.add("no-image");
 
-          // Move content to photo area
-          const photo = card.querySelector(".doc-photo");
-          const name = card.querySelector(".doc-name").cloneNode(true);
-          const spec = card.querySelector(".doc-spec").cloneNode(true);
-          const qual = card.querySelector(".doc-qual").cloneNode(true);
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "doc-content-wrapper";
-          wrapper.appendChild(name);
-          wrapper.appendChild(spec);
-          wrapper.appendChild(qual);
-
-          photo.innerHTML = "";
-          photo.appendChild(wrapper);
+          // Keep current text, just replace Image Source with Placeholder
+          if (img) {
+            img.src = placeholderSVG;
+            img.alt = "Doctor Placeholder";
+          } else {
+            // If img tag missing completely (rare), add it
+            const newImg = document.createElement("img");
+            newImg.src = placeholderSVG;
+            const photoDiv = card.querySelector(".doc-photo");
+            if (photoDiv) photoDiv.appendChild(newImg);
+          }
 
           cardsWithoutImages.push(card);
         } else {
@@ -1388,12 +1383,11 @@
         }
       });
 
-      // Clear the grid
+      // Clear the grid and re-append in order: Images first -> Placeholders last
       grid.innerHTML = "";
-
-      // Add cards with images first, then cards without images
       cardsWithImages.forEach((card) => grid.appendChild(card));
       cardsWithoutImages.forEach((card) => grid.appendChild(card));
+
     })();
   </script>
   <script src="https://assets.taskade.com/embeds/latest/taskade-embed.min.js"></script>
